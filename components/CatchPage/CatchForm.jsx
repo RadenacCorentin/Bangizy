@@ -4,15 +4,15 @@ import { View, TextInput, StyleSheet, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button } from "react-native-paper";
 
-const DescriptionForm = () => {
+const CatchForm = () => {
   const navigation = useNavigation();
-  const [formDescription, setFormDescription] = useState({});
+  const [formCatch, setFormCatch] = useState({});
 
   const handleChange = (name, value) => {
-    setFormDescription({ ...formDescription, [name]: value });
+    setFormCatch({ ...formCatch, [name]: value });
   };
   const handleSubmit = () => {
-    console.log(formDescription);
+    console.log(formCatch);
     navigation.navigate("ResultPage");
   };
 
@@ -24,7 +24,7 @@ const DescriptionForm = () => {
           name="name"
           style={styles.input}
           onChangeText={(text) => handleChange("name", text)}
-          value={formDescription.name}
+          value={formCatch.name}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -34,14 +34,13 @@ const DescriptionForm = () => {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={(numeric) => handleChange("age", numeric)}
-          value={formDescription.age}
-          maxLength={3}
+          value={formCatch.age}
         />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Gender...</Text>
         <Picker
-          selectedValue={formDescription.gender}
+          selectedValue={formCatch.gender}
           style={{ height: 50, width: 150 }}
           onValueChange={(itemValue) => handleChange("gender", itemValue)}
         >
@@ -57,8 +56,7 @@ const DescriptionForm = () => {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={(numeric) => handleChange("height", numeric)}
-          value={formDescription.height}
-          maxLength={3}
+          value={formCatch.height}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -68,8 +66,7 @@ const DescriptionForm = () => {
           style={styles.input}
           keyboardType="numeric"
           onChangeText={(numeric) => handleChange("weight", numeric)}
-          value={formDescription.weight}
-          maxLength={3}
+          value={formCatch.weight}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -78,7 +75,7 @@ const DescriptionForm = () => {
           name="caractere"
           style={styles.input}
           onChangeText={(text) => handleChange("caractere", text)}
-          value={formDescription.caractere}
+          value={formCatch.caractere}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -87,7 +84,7 @@ const DescriptionForm = () => {
           name="hobby"
           style={styles.input}
           onChangeText={(text) => handleChange("hobby", text)}
-          value={formDescription.hobby}
+          value={formCatch.hobby}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -96,29 +93,20 @@ const DescriptionForm = () => {
           name="hobby2"
           style={styles.input}
           onChangeText={(text) => handleChange("hobby2", text)}
-          value={formDescription.hobby2}
+          value={formCatch.hobby2}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>You'r here for?...</Text>
+        <Text style={styles.label}>What style of catch phrase?...</Text>
         <TextInput
           name="objectif"
           style={styles.input}
           onChangeText={(text) => handleChange("objectif", text)}
-          value={formDescription.objectif}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Anything else?...</Text>
-        <TextInput
-          name="other"
-          style={styles.input}
-          onChangeText={(text) => handleChange("other", text)}
-          value={formDescription.other}
+          value={formCatch.objectif}
         />
       </View>
       <Button mode="contained" onPress={handleSubmit}>
-        Submit
+        Make me a catch phrase !
       </Button>
     </View>
   );
@@ -148,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DescriptionForm;
+export default CatchForm;

@@ -10,14 +10,14 @@ const Home = () => {
       <Button
         style={styles.button}
         mode="contained"
-        onPress={() => navigation.navigate("DescriptionPage")}
+        onPress={() => navigation.navigate("CatchPage")}
       >
         Make me a catch please
       </Button>
       <Button
         style={styles.button}
         mode="contained"
-        onPress={() => navigation.navigate("AnotherPage")}
+        onPress={() => navigation.navigate("DescriptionPage")}
       >
         Make me a description
       </Button>
