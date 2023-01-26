@@ -4,33 +4,25 @@ import { Configuration, OpenAIApi } from "openai";
 import { View, TextInput, StyleSheet, Text } from "react-native";
 import { Button } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
+import { getResultDescriptionOpenApi } from "../../utils/ApiOpenai";
 
 import "react-native-url-polyfill/auto";
 
 const DescriptionForm = () => {
   const navigation = useNavigation();
+  const [gender, setGender] = useState("Femme");
   const [formDescription, setFormDescription] = useState({});
 
   const handleChange = (name, value) => {
     setFormDescription({ ...formDescription, [name]: value });
   };
   const handleSubmit = async () => {
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+    setFormDescription({
+      ...formDescription,
+      gender,
     });
-    const openai = new OpenAIApi(configuration);
-
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: "Quel est la capital de la France?",
-      temperature: 0.9,
-      max_tokens: 150,
-      top_p: 1,
-      frequency_penalty: 0.0,
-      presence_penalty: 0.6,
-    });
-    console.log(response);
-    navigation.navigate("ResultPage");
+    const response = await getResultDescriptionOpenApi(formDescription);
+    navigation.navigate("ResultPage", response);
   };
 
   return (
@@ -58,13 +50,15 @@ const DescriptionForm = () => {
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Gender...</Text>
         <Picker
-          selectedValue={formDescription.gender}
+          selectedValue={
+            formDescription.gender ? formDescription.gender : gender
+          }
           style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue) => handleChange("gender", itemValue)}
+          onValueChange={(itemValue) => setGender(itemValue)}
         >
-          <Picker.Item label="Man" value="man" />
-          <Picker.Item label="Woman" value="Woman" />
-          <Picker.Item label="Other" value="Other" />
+          <Picker.Item label="Homme" value="Homme" />
+          <Picker.Item label="Femme" value="Femme" />
+          <Picker.Item label="Autre" value="Autre" />
         </Picker>
       </View>
       <View style={styles.inputContainer}>

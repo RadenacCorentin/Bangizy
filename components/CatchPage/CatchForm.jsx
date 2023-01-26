@@ -12,7 +12,6 @@ const CatchForm = () => {
     setFormCatch({ ...formCatch, [name]: value });
   };
   const handleSubmit = () => {
-    console.log(formCatch);
     navigation.navigate("ResultPage");
   };
 
