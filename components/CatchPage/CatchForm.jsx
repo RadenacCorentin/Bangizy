@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, TextInput, StyleSheet, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { Button } from "react-native-paper";
+import { getResultCatchOpenApi } from "../../utils/ApiOpenai";
 
 const CatchForm = () => {
   const navigation = useNavigation();
@@ -11,9 +12,9 @@ const CatchForm = () => {
   const handleChange = (name, value) => {
     setFormCatch({ ...formCatch, [name]: value });
   };
-  const handleSubmit = () => {
-    console.log(formCatch);
-    navigation.navigate("ResultPage");
+  const handleSubmit = async () => {
+    const response = await getResultCatchOpenApi(formCatch);
+    navigation.navigate("ResultPage", response);
   };
 
   return (
@@ -38,6 +39,15 @@ const CatchForm = () => {
         />
       </View>
       <View style={styles.inputContainer}>
+        <Text style={styles.label}>Eyes color...</Text>
+        <TextInput
+          name="eyesColor"
+          style={styles.input}
+          onChangeText={(text) => handleChange("eyesColor", text)}
+          value={formCatch.eyesColor}
+        />
+      </View>
+      <View style={styles.inputContainer}>
         <Text style={styles.label}>Gender...</Text>
         <Picker
           selectedValue={formCatch.gender}
@@ -46,37 +56,7 @@ const CatchForm = () => {
         >
           <Picker.Item label="Man" value="man" />
           <Picker.Item label="Woman" value="Woman" />
-          <Picker.Item label="Other" value="Other" />
         </Picker>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Height...(cm)</Text>
-        <TextInput
-          name="height"
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(numeric) => handleChange("height", numeric)}
-          value={formCatch.height}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Weight...(kg)</Text>
-        <TextInput
-          name="weight"
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={(numeric) => handleChange("weight", numeric)}
-          value={formCatch.weight}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Caractere...</Text>
-        <TextInput
-          name="caractere"
-          style={styles.input}
-          onChangeText={(text) => handleChange("caractere", text)}
-          value={formCatch.caractere}
-        />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Main hobby...</Text>
@@ -97,13 +77,18 @@ const CatchForm = () => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>What style of catch phrase?...</Text>
-        <TextInput
-          name="objectif"
-          style={styles.input}
-          onChangeText={(text) => handleChange("objectif", text)}
-          value={formCatch.objectif}
-        />
+        <Text style={styles.label}>What style of catch phrase?..</Text>
+        <Picker
+          selectedValue={formCatch.style}
+          style={{ height: 50, width: 150 }}
+          onValueChange={(itemValue) => handleChange("style", itemValue)}
+        >
+          <Picker.Item label="Romantic" value="romantic" />
+          <Picker.Item label="Sexy" value="sexy" />
+          <Picker.Item label="Friendly" value="friendly" />
+          <Picker.Item label="Naughty" value="naughty" />
+          <Picker.Item label="Funny" value="funny" />
+        </Picker>
       </View>
       <Button mode="contained" onPress={handleSubmit}>
         Make me a catch phrase !
@@ -113,11 +98,6 @@ const CatchForm = () => {
 };
 
 const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1,
-  //     alignItems: "center",
-  //     justifyContent: "center",
-  //   },
   inputContainer: {
     width: "100%",
     flexDirection: "column",

@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, TextInput, StyleSheet, Text } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { Button } from "react-native-paper";
+import { Picker } from "@react-native-picker/picker";
+import { getResultDescriptionOpenApi } from "../../utils/ApiOpenai";
+
+import "react-native-url-polyfill/auto";
 
 const DescriptionForm = () => {
   const navigation = useNavigation();
+  const [gender, setGender] = useState("Man");
   const [formDescription, setFormDescription] = useState({});
 
   const handleChange = (name, value) => {
     setFormDescription({ ...formDescription, [name]: value });
   };
-  const handleSubmit = () => {
-    console.log(formDescription);
-    navigation.navigate("ResultPage");
+  const handleSubmit = async () => {
+    setFormDescription({
+      ...formDescription,
+      gender,
+    });
+    const response = await getResultDescriptionOpenApi(formDescription);
+    navigation.navigate("ResultPage", response);
   };
 
   return (
@@ -41,13 +49,15 @@ const DescriptionForm = () => {
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Gender...</Text>
         <Picker
-          selectedValue={formDescription.gender}
+          selectedValue={
+            formDescription.gender ? formDescription.gender : gender
+          }
           style={{ height: 50, width: 150 }}
-          onValueChange={(itemValue) => handleChange("gender", itemValue)}
+          onValueChange={(itemValue) => setGender(itemValue)}
         >
-          <Picker.Item label="Man" value="man" />
-          <Picker.Item label="Woman" value="Woman" />
-          <Picker.Item label="Other" value="Other" />
+          <Picker.Item label="Homme" value="Homme" />
+          <Picker.Item label="Femme" value="Femme" />
+          <Picker.Item label="Autre" value="Autre" />
         </Picker>
       </View>
       <View style={styles.inputContainer}>
@@ -125,11 +135,6 @@ const DescriptionForm = () => {
 };
 
 const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1,
-  //     alignItems: "center",
-  //     justifyContent: "center",
-  //   },
   inputContainer: {
     width: "100%",
     flexDirection: "column",
